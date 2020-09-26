@@ -2,7 +2,9 @@ use ivillia;
 
 CREATE TABLE IF NOT EXISTS users (
     id char(16) PRIMARY KEY,
-    username varchar(60)
+    username varchar(60),
+    password_hash binary,
+    password_salt binary
 );
 
 CREATE TABLE IF NOT EXISTS games (
