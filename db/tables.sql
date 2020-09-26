@@ -1,4 +1,4 @@
-use vivara;
+use ivillia;
 
 CREATE TABLE IF NOT EXISTS users (
     id char(16) PRIMARY KEY,
@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS games (
 CREATE TABLE IF NOT EXISTS games_loaned (
     id char(16) PRIMARY KEY,
     id_user char(16),
-    id_game char(16)
+    id_game char(16),
+    loan_date date,
+    return_date date,
     FOREIGN KEY (id_user) REFERENCES users(id)
     FOREIGN KEY (id_game) REFERENCES games(id)
 )
