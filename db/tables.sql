@@ -1,24 +1,38 @@
-use ivillia;
+use invillia;
 
 CREATE TABLE IF NOT EXISTS users (
-    id char(16) PRIMARY KEY,
-    username varchar(60),
-    password_hash binary,
-    password_salt binary
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username varchar(60) not null,
+    password_hash blob not null,
+    password_salt blob not null,
+	created date not null
 );
 
-CREATE TABLE IF NOT EXISTS games (
-    id char(16) PRIMARY KEY,
-    title varchar(60),
-    console varchar (10)
-)
+CREATE TABLE IF NOT EXISTS games_user (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id_user int not null,
+    title varchar(60) not null,
+    console varchar (10) not null,
+	created date not null,
+	FOREIGN KEY (id_user) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS friends_user (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id_user int not null,
+    name_friend varchar(60) not null,
+	created date not null,
+	created date not null,
+	FOREIGN KEY (id_user) REFERENCES users(id)
+);
 
 CREATE TABLE IF NOT EXISTS games_loaned (
-    id char(16) PRIMARY KEY,
-    id_user char(16),
-    id_game char(16),
-    loan_date date,
-    return_date date,
-    FOREIGN KEY (id_user) REFERENCES users(id)
-    FOREIGN KEY (id_game) REFERENCES games(id)
-)
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_friend int not null,
+    id_game int not null,
+    loan_date date not null,
+    return_date date null,
+	created date not null,
+    FOREIGN KEY (id_friend) REFERENCES friends_user(id),
+    FOREIGN KEY (id_game) REFERENCES games_user(id)
+);

@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameLoanApi.Entities
 {
-    public class User
+    [Table("users")]
+    public class User: BaseEntity
     {
-        public Guid Id { get; set; }
         public string Username { get; set; }
+        [Column("password_hash")]
+        public byte[] PasswordHash { get; set; }
+        [Column("password_salt")]
+        public byte[] PasswordSalt { get; set; }
+        public List<FriendUser> FriendsUser { get; set; }
+        public List<GameUser> Games { get; set; }
     }
 }

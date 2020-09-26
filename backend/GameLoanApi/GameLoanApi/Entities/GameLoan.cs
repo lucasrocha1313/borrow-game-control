@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameLoanApi.Entities
 {
-    public class GameLoan
+    [Table("game_loan")]
+    public class GameLoan: BaseEntity
     {
-        public Guid Id { get; set; }
-        public Guid IdUser { get; set; }
-        public Guid IdGame { get; set; }
+        [Column("id_friend")]
+        public int IdFriend { get; set; }
+        [Column("id_game")]
+        public int IdGame { get; set; }
+        [Column("loan_date")]
         public DateTime LoanDate { get; set; }
+        [Column("return_date")]
         public DateTime ReturnDate { get; set; }
 
+        public FriendUser FriendWithGame{ get; set; }
+        public List<GameUser> GamesLoan{ get; set; }
     }
 }
