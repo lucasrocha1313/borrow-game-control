@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 namespace GameLoanApi
@@ -42,7 +44,25 @@ namespace GameLoanApi
             services.AddScoped<IGameLentRepository, GameLentRepository>();
 
             AddAuthenticationService(services);
+
+            //TODO refatorar
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Loan of games",
+                        Version = "v1",
+                        Description = "REST API created with ASP.NET Core 3.1 to control loaning games to friends",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Lucas Rocha",
+                            Url = new Uri("https://github.com/lucasrocha1313/borrow-game-control")
+                        }
+                    });
+            });
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,6 +77,11 @@ namespace GameLoanApi
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Loan of games V1");
+            });
 
             app.UseEndpoints(endpoints =>
             {

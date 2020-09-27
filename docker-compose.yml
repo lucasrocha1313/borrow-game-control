@@ -7,8 +7,6 @@ services:
       dockerfile: api.Dockerfile 
     ports:
       - 5000:80
-    volumes:
-      - appbuild:/app
     links:
       - mysql
    
@@ -29,5 +27,4 @@ services:
       MYSQL_PASSWORD: invillia@legal
 
 volumes:
-  appbuild:
   dbvol:
