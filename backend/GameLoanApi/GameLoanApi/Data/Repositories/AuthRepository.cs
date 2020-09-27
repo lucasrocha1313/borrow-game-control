@@ -1,5 +1,8 @@
 ﻿using GameLoanApi.Data.Repositories.Interfaces;
 using GameLoanApi.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameLoanApi.Data.Repositories
@@ -10,6 +13,11 @@ namespace GameLoanApi.Data.Repositories
         public AuthRepository(DataContext context)
         {
             _context = context;
+        }
+
+        public async Task<User> GetUserByUsername(string userName)
+        {
+            return await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
         }
 
         public async Task Register(User user)

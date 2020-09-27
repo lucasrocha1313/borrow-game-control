@@ -13,6 +13,7 @@ namespace GameLoanApi.Mapping
         public AutoMapping()
         {
             CreateMap<UserForRegisterDto, User>();
+            CreateMap<User, UserLoggedDto>();
         }
     }
 }
