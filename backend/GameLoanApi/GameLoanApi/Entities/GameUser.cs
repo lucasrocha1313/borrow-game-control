@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameLoanApi.Entities
 {
@@ -9,10 +7,10 @@ namespace GameLoanApi.Entities
     {
         public string Title { get; set; }
         public string Console { get; set; }
-
+        [Column("id_user")]
         public int IdUser { get; set; }
         public User UserOwner { get; set; }
 
-        public GameLoan Loaned { get; set; }
+        public GameLent Loaned { get; set; }
     }
 }

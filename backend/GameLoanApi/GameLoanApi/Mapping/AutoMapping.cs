@@ -14,6 +14,9 @@ namespace GameLoanApi.Mapping
         {
             CreateMap<UserForRegisterDto, User>();
             CreateMap<User, UserLoggedDto>();
+            CreateMap<GameToAddDto, GameUser>();
+            CreateMap<FriendToAddDto, FriendUser>();
+            CreateMap<GameToLentDto, GameLent>();
         }
     }
 }

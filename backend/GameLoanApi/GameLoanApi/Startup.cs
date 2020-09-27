@@ -32,9 +32,14 @@ namespace GameLoanApi
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IGameLoanService, GameLoanService>();
+
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGameReposistory, GameRepository>();
+            services.AddScoped<IFriendUserRepository, FriendUserRepository>();
+            services.AddScoped<IGameLentRepository, GameLentRepository>();
 
             AddAuthenticationService(services);
         }
@@ -49,10 +54,9 @@ namespace GameLoanApi
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -62,17 +66,23 @@ namespace GameLoanApi
 
         private void AddAuthenticationService(IServiceCollection services)
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options => {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-                                                .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                            ValidateAudience = false,
-                            ValidateIssuer = false
-                        };
-                    });
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options => {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+                                        .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
         }
     }
 }

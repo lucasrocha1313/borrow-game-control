@@ -12,6 +12,6 @@ namespace GameLoanApi.Entities
         [Column("id_user")]
         public int IdUser { get; set; }
         public User User { get; set; }
-        public List<GameLoan> GamesBorrowed { get; set; }
+        public List<GameLent> GamesBorrowed { get; set; }
     }
 }

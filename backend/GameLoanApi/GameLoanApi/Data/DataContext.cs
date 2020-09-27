@@ -9,7 +9,7 @@ namespace GameLoanApi.Data
         public DbSet<User> User { get; set; }
         public DbSet<FriendUser> FriendUser { get; set; }
         public DbSet<GameUser> Game { get; set; }
-        public DbSet<GameLoan> GameLoan { get; set; }
+        public DbSet<GameLent> GameLent { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,15 +25,18 @@ namespace GameLoanApi.Data
 
             modelBuilder.Entity<GameUser>()
                 .HasOne(g => g.UserOwner)
-                .WithMany(u => u.Games);
+                .WithMany(u => u.Games)
+                .HasForeignKey(u => u.IdUser);
 
-            modelBuilder.Entity<GameLoan>()
+            modelBuilder.Entity<GameLent>()
                 .HasMany(gl => gl.GamesLoan)
-                .WithOne(g => g.Loaned);
+                .WithOne(g => g.Loaned)
+                .HasForeignKey(g => g.IdUser);
 
-            modelBuilder.Entity<GameLoan>()
+            modelBuilder.Entity<GameLent>()
                 .HasOne(gl => gl.FriendWithGame)
-                .WithMany(f => f.GamesBorrowed);
+                .WithMany(f => f.GamesBorrowed)
+                .HasForeignKey(g => g.IdFriend);
         }
     }
 }
