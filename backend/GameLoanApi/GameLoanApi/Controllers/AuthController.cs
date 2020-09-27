@@ -3,6 +3,7 @@ using GameLoanApi.Data.Repositories.Interfaces;
 using GameLoanApi.Dtos;
 using GameLoanApi.Entities;
 using GameLoanApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -27,6 +28,7 @@ namespace GameLoanApi.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserForRegisterDto user)
         {
             user.Username = user.Username.ToLower();
@@ -44,6 +46,7 @@ namespace GameLoanApi.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
             var userFromRepository = await _authService.Login(userForLogin.Username.ToLower(), userForLogin.Password);
