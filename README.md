@@ -3,6 +3,7 @@ Web application to control games loaned to friends
 
 
 **How to run the application**
+
 Inside the root folder of the project run the below commands:
 *docker-compose build*
 *docker-compose up*
