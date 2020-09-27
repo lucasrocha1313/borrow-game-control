@@ -4,14 +4,12 @@ Web application to control games loaned to friends
 
 **How to run the application**
 
-
-
 Inside the root folder of the project run the below commands:
 *docker-compose build*
 *docker-compose up*
 
-Obs: I found some problems using *docker-compose build*. Sometimes it shows the error *"Cannot locate specified Dockerfile"*
-
+Obs: I found some problems using *docker-compose build*. Sometimes it shows the error *"Cannot locate specified Dockerfile: db.Dockerfile"* even though the file is there.
+ 
 **How to test the API**
 
 obs: On windows you must substitute localhost for the current IP of the PC.
