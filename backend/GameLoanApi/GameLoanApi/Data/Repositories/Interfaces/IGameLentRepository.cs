@@ -1,5 +1,6 @@
 ﻿using GameLoanApi.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameLoanApi.Data.Repositories.Interfaces
@@ -8,5 +9,6 @@ namespace GameLoanApi.Data.Repositories.Interfaces
     {
         Task LendGames(List<GameLent> gameToLent);
         IEnumerable<GameLent> GetLentGamesByUserGameId(IEnumerable<int> idsUserGame);
+        Task Update(IEnumerable<GameLent> gamesLent);
     }
 }

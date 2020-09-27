@@ -37,5 +37,15 @@ namespace GameLoanApi.Services
 
             await _gameLentRepository.LendGames(gamesLent);
         }
+
+        public async Task MarkReturnedGames(IEnumerable<int> idsGamesUser)
+        {
+            var gamesLoaned = _gameLentRepository.GetLentGamesByUserGameId(idsGamesUser);
+            foreach (var gameLoaned in gamesLoaned)
+            {
+                gameLoaned.ReturnDate = DateTime.Now;
+            }
+            await _gameLentRepository.Update(gamesLoaned);
+        }
     }
 }

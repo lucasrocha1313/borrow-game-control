@@ -10,5 +10,6 @@ namespace GameLoanApi.Services.Interfaces
     {
         bool GameAlreadyLent(IEnumerable<int> idsUserGame);
         Task LentGames(List<GameToLentDto> gameToLent, int idFriend);
+        Task MarkReturnedGames(IEnumerable<int> idsGamesUser);
     }
 }

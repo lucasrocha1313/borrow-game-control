@@ -31,5 +31,13 @@ namespace GameLoanApi.Controllers
             await _gameLoanService.LentGames(gameToLent, idFriend);
             return Ok("Games Loaned!!");
         }
+
+        [HttpPost("return")]
+        public async Task<IActionResult> ReturnGames(List<GameReturnedDto> gamesReturned)
+        {
+            await _gameLoanService.MarkReturnedGames(gamesReturned.Select(g => g.IdGame));
+
+            return Ok("Games Returned!!");
+        }
     }
 }
