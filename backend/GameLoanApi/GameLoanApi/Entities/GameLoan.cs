@@ -12,8 +12,6 @@ namespace GameLoanApi.Entities
         public int IdFriend { get; set; }
         [Column("id_game")]
         public int IdGame { get; set; }
-        [Column("loan_date")]
-        public DateTime LoanDate { get; set; }
         [Column("return_date")]
         public DateTime ReturnDate { get; set; }
 
