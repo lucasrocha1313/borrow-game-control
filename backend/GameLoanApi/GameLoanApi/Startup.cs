@@ -44,25 +44,8 @@ namespace GameLoanApi
             services.AddScoped<IGameLentRepository, GameLentRepository>();
 
             AddAuthenticationService(services);
-
-            //TODO refatorar
-            services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo
-                    {
-                        Title = "Loan of games",
-                        Version = "v1",
-                        Description = "REST API created with ASP.NET Core 3.1 to control loaning games to friends",
-                        Contact = new OpenApiContact
-                        {
-                            Name = "Lucas Rocha",
-                            Url = new Uri("https://github.com/lucasrocha1313/borrow-game-control")
-                        }
-                    });
-            });
+            ConfigureSwagger(services);
         }
-
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -107,6 +90,24 @@ namespace GameLoanApi
                     ValidateAudience = false,
                     ValidateIssuer = false
                 };
+            });
+        }
+
+        private void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Loan of games",
+                        Version = "v1",
+                        Description = "REST API created with ASP.NET Core 3.1 to control loaning games to friends",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Lucas Rocha",
+                            Url = new Uri("https://github.com/lucasrocha1313/borrow-game-control")
+                        }
+                    });
             });
         }
     }

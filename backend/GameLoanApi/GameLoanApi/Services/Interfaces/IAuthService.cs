@@ -8,5 +8,6 @@ namespace GameLoanApi.Services.Interfaces
         Task<User> Register(User user, string password);
         Task<User> Login(string userName, string password);
         object GenerateToken(User user);
+        void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
     }
 }

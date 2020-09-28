@@ -16,11 +16,13 @@ namespace GameLoanApi.Services
 {
     public class AuthService: IAuthService
     {
+        #region Properties
         private readonly IMapper _mapper;
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
         private readonly IAuthRepository _authRepository;
-
+        #endregion
+        #region Constructor
         public AuthService(IAuthRepository authRepository,
             Microsoft.Extensions.Configuration.IConfiguration config,
             IMapper mapper)
@@ -29,7 +31,9 @@ namespace GameLoanApi.Services
             _config = config;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Public Methods
         public async Task<User> Login(string userName, string password)
         {
             try
@@ -111,17 +115,16 @@ namespace GameLoanApi.Services
                 userLogged
             };
         }
-
+        #endregion
+        #region Private Methods
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            using var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt);
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-                return computedHash.SequenceEqual(passwordHash);
-            }
+            return computedHash.SequenceEqual(passwordHash);
         }
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new System.Security.Cryptography.HMACSHA512();
             passwordSalt = hmac.Key;
@@ -135,5 +138,6 @@ namespace GameLoanApi.Services
 
             return user.Valid();
         }
+        #endregion
     }
 }

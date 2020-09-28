@@ -18,7 +18,8 @@ namespace GameLoanApi.Entities
 
         public bool Valid()
         {
-            return !string.IsNullOrEmpty(Username);
+            return !string.IsNullOrEmpty(Username)
+                && Created != DateTime.MinValue;
         }
     }
 }
