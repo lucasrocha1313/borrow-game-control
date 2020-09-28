@@ -15,5 +15,10 @@ namespace GameLoanApi.Entities
         public byte[] PasswordSalt { get; set; }
         public List<FriendUser> FriendsUser { get; set; }
         public List<GameUser> Games { get; set; }
+
+        public bool Valid()
+        {
+            return !string.IsNullOrEmpty(Username);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using GameLoanApi.Data.Repositories.Interfaces;
 using GameLoanApi.Dtos;
 using GameLoanApi.Entities;
+using GameLoanApi.Exceptions;
 using GameLoanApi.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -31,27 +32,51 @@ namespace GameLoanApi.Services
 
         public async Task<User> Login(string userName, string password)
         {
-            var userDb = await _authRepository.GetUserByUsername(userName);
+            try
+            {
+                var userDb = await _authRepository.GetUserByUsername(userName);
 
-            if (userDb == null)
-                return null;
+                if (userDb == null)
+                    return null;
 
-            if (!VerifyPasswordHash(password, userDb.PasswordHash, userDb.PasswordSalt))
-                return null;
+                if (!VerifyPasswordHash(password, userDb.PasswordHash, userDb.PasswordSalt))
+                    return null;
 
-            return userDb;
+                return userDb;
+            }
+            catch(Exception ex)
+            {
+                throw new LoginException(ex.Message);
+            }
+            
         }
 
         public async Task<User> Register(User user, string password)
         {
-            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+            try
+            {
+                if(IsValidToRegister(user, password))
+                {
+                    CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+                    user.PasswordHash = passwordHash;
+                    user.PasswordSalt = passwordSalt;
 
-            await _authRepository.Register(user);
+                    await _authRepository.Register(user);
 
-            return user;
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error Registering User" + ex.Message);
+                throw new RegisterUserException(ex.Message);
+            }
+            
         }
 
         public object GenerateToken(User user)
@@ -91,17 +116,24 @@ namespace GameLoanApi.Services
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
-
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new System.Security.Cryptography.HMACSHA512();
             passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        }
+
+        private bool IsValidToRegister(User user, string password)
+        {
+            if (string.IsNullOrEmpty(password))
+                return false;
+
+            return user.Valid();
         }
     }
 }

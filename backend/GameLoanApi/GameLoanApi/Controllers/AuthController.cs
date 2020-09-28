@@ -42,7 +42,10 @@ namespace GameLoanApi.Controllers
 
             var createdUser = await _authService.Register(userToCreate, user.Password);
 
-            return Ok(createdUser.Username);
+            if (createdUser != null)
+                return Ok(createdUser.Username);
+            else
+                return BadRequest("One of the fields is invalid");            
         }
 
         [HttpPost("login")]
