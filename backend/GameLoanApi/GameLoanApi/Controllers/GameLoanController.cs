@@ -1,11 +1,10 @@
-﻿using System;
+﻿using GameLoanDomain.Dtos;
+using GameLoanDomain.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameLoanApi.Dtos;
-using GameLoanApi.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GameLoanApi.Controllers
 {

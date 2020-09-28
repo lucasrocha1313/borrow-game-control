@@ -1,7 +1,7 @@
 using AutoMapper;
-using GameLoanApi.Data.Repositories.Interfaces;
-using GameLoanApi.Entities;
-using GameLoanApi.Services;
+using GameLoanApplication;
+using GameLoanDomain.Entities;
+using GameLoanDomain.Repositories;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using System;
@@ -18,13 +18,13 @@ namespace GameLoanApiTest
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
         public AuthTest()
-        {            
+        {
             _authRepository = Substitute.For<IAuthRepository>();
 
             _authService = new AuthService(_authRepository, _config, _mapper);
 
             GenerateMocksWithoutReturn();
-            GenerateMocksWithReturn();            
+            GenerateMocksWithReturn();
         }
 
         private void GenerateMocksWithoutReturn()

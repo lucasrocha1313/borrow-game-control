@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using GameLoanApi.Data.Repositories.Interfaces;
-using GameLoanApi.Dtos;
-using GameLoanApi.Entities;
-using GameLoanApi.Services.Interfaces;
+using GameLoanDomain.Dtos;
+using GameLoanDomain.Entities;
+using GameLoanDomain.Repositories;
+using GameLoanDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

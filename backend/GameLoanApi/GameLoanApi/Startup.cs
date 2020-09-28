@@ -1,9 +1,10 @@
 using AutoMapper;
-using GameLoanApi.Data;
-using GameLoanApi.Data.Repositories;
-using GameLoanApi.Data.Repositories.Interfaces;
-using GameLoanApi.Services;
-using GameLoanApi.Services.Interfaces;
+using GameLoanApi.Extensions;
+using GameLoanApplication;
+using GameLoanData.EF.Context;
+using GameLoanData.EF.Repositories;
+using GameLoanDomain.Repositories;
+using GameLoanDomain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,6 @@ namespace GameLoanApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(db => db.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
@@ -44,16 +44,18 @@ namespace GameLoanApi
             services.AddScoped<IGameLentRepository, GameLentRepository>();
 
             AddAuthenticationService(services);
+
+            services.AddAutoMapperCopnfiguration();
+
             ConfigureSwagger(services);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }            
+            }
 
             app.UseHttpsRedirection();
 
@@ -62,7 +64,8 @@ namespace GameLoanApi
             app.UseAuthorization();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Loan of games V1");
             });
 
@@ -79,7 +82,8 @@ namespace GameLoanApi
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -95,7 +99,8 @@ namespace GameLoanApi
 
         private void ConfigureSwagger(IServiceCollection services)
         {
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {

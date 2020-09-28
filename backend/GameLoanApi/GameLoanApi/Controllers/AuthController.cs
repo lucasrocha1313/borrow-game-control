@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
-using GameLoanApi.Data.Repositories.Interfaces;
-using GameLoanApi.Dtos;
-using GameLoanApi.Entities;
-using GameLoanApi.Services.Interfaces;
+using GameLoanDomain.Dtos;
+using GameLoanDomain.Entities;
+using GameLoanDomain.Repositories;
+using GameLoanDomain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GameLoanApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController: ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IMapper _mapper;
 
@@ -47,7 +45,7 @@ namespace GameLoanApi.Controllers
             if (createdUser != null)
                 return Ok(createdUser.Username);
             else
-                return BadRequest("One of the fields is invalid");            
+                return BadRequest("One of the fields is invalid");
         }
 
         [HttpPost("login")]
