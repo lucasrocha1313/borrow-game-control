@@ -115,6 +115,10 @@ namespace GameLoanApi.Services
                 userLogged
             };
         }
+        public bool IsUnauthorized(ClaimsPrincipal User, int userId)
+        {
+            return userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        }
         #endregion
         #region Private Methods
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

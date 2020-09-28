@@ -1,4 +1,5 @@
 ﻿using GameLoanApi.Entities;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GameLoanApi.Services.Interfaces
@@ -9,5 +10,6 @@ namespace GameLoanApi.Services.Interfaces
         Task<User> Login(string userName, string password);
         object GenerateToken(User user);
         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
+        bool IsUnauthorized(ClaimsPrincipal User, int userId);
     }
 }

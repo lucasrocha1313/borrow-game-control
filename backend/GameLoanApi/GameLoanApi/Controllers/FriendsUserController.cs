@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GameLoanApi.Data.Repositories.Interfaces;
 using GameLoanApi.Dtos;
 using GameLoanApi.Entities;
+using GameLoanApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GameLoanApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("{userId}/[controller]")]
     [ApiController]
     [Authorize]
     public class FriendsUserController : ControllerBase
@@ -20,15 +18,22 @@ namespace GameLoanApi.Controllers
         private readonly IMapper _mapper;
 
         private readonly IFriendUserRepository _friendUserReposistory;
+        private readonly IAuthService _authService;
 
-        public FriendsUserController(IFriendUserRepository friendUserReposistory, IMapper mapper)
+        public FriendsUserController(IFriendUserRepository friendUserReposistory,
+            IAuthService authService,
+            IMapper mapper)
         {
             _friendUserReposistory = friendUserReposistory;
+            _authService = authService;
             _mapper = mapper;
         }
         [HttpPost]
-        public async Task<IActionResult> AddGames(List<FriendToAddDto> frinedsToAdd)
+        public async Task<IActionResult> AddGames(List<FriendToAddDto> frinedsToAdd, int userId)
         {
+            if (_authService.IsUnauthorized(User, userId))
+                return Unauthorized();
+
             var friendsUser = _mapper.Map<List<FriendUser>>(frinedsToAdd);
 
             await _friendUserReposistory.Add(friendsUser);
